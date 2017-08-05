@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http.Formatting;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Nimrod.Events.Api.Areas.HelpPage;
+using WebApi.Hal;
 
 namespace Nimrod.Events.Api
 {
@@ -30,10 +27,14 @@ namespace Nimrod.Events.Api
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
-            var formatter = config.Formatters.JsonFormatter;
+            JsonMediaTypeFormatter formatter = config.Formatters.JsonFormatter;
             formatter.Indent = true;
             formatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            JsonHalMediaTypeFormatter halMediaTypeFormatter = new JsonHalMediaTypeFormatter();
+            halMediaTypeFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Formatters.Insert(0, halMediaTypeFormatter);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using Nimrod.Events.Api.Models.Base;
+using WebApi.Hal;
 
 namespace Nimrod.Events.Api.Models
 {
@@ -28,5 +29,16 @@ namespace Nimrod.Events.Api.Models
         public string Email { get; set; }
         [StringLength(100)]
         public string Web { get; set; }
+
+        public string Name => $"{Forename} {Surname}";
+
+        public override string Rel => "contacts";
+
+        public override string Href => $"api/contacts/{Id}";
+
+        //protected override void CreateHypermedia()
+        //{
+        //    Links.Add(new Link("self", Href, Name));
+        //}
     }
 }

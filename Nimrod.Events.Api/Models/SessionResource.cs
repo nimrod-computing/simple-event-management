@@ -15,5 +15,9 @@ namespace Nimrod.Events.Api.Models
         public string Abstract { get; set; }
         public bool IsPlenary { get; set; }
         public int? Capacity { get; set; }
+
+        public override string Href => $"api/sessions/{Id}";
+
+        public override string Rel => "sessions";
     }
 }

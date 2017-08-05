@@ -46,7 +46,7 @@ namespace Nimrod.Events.Api.Controllers
 
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Route("UserInfo")]
+        [Route("userinfo")]
         public UserInfoViewModel GetUserInfo()
         {
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
@@ -60,7 +60,7 @@ namespace Nimrod.Events.Api.Controllers
         }
 
         // POST api/Account/Logout
-        [Route("Logout")]
+        [Route("logout")]
         public IHttpActionResult Logout()
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
@@ -68,15 +68,13 @@ namespace Nimrod.Events.Api.Controllers
         }
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
-        [Route("ManageInfo")]
+        [Route("manageinfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
             IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             if (user == null)
-            {
                 return null;
-            }
 
             List<UserLoginInfoViewModel> logins = new List<UserLoginInfoViewModel>();
 
@@ -108,7 +106,7 @@ namespace Nimrod.Events.Api.Controllers
         }
 
         // POST api/Account/ChangePassword
-        [Route("ChangePassword")]
+        [Route("changepassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -128,7 +126,7 @@ namespace Nimrod.Events.Api.Controllers
         }
 
         // POST api/Account/SetPassword
-        [Route("SetPassword")]
+        [Route("setpassword")]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -147,39 +145,31 @@ namespace Nimrod.Events.Api.Controllers
         }
 
         // POST api/Account/AddExternalLogin
-        [Route("AddExternalLogin")]
+        [Route("addexternallogin")]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
 
             AuthenticationTicket ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
 
-            if (ticket == null || ticket.Identity == null || (ticket.Properties != null
-                && ticket.Properties.ExpiresUtc.HasValue
-                && ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
-            {
+            if (ticket == null || ticket.Identity == null
+                || (ticket.Properties?.ExpiresUtc != null &&
+                    ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
                 return BadRequest("External login failure.");
-            }
 
             ExternalLoginData externalData = ExternalLoginData.FromIdentity(ticket.Identity);
 
             if (externalData == null)
-            {
                 return BadRequest("The external login is already associated with an account.");
-            }
 
             IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(),
                 new UserLoginInfo(externalData.LoginProvider, externalData.ProviderKey));
 
             if (!result.Succeeded)
-            {
                 return GetErrorResult(result);
-            }
 
             return Ok();
         }
@@ -189,9 +179,7 @@ namespace Nimrod.Events.Api.Controllers
         public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             IdentityResult result;
 
@@ -206,9 +194,7 @@ namespace Nimrod.Events.Api.Controllers
             }
 
             if (!result.Succeeded)
-            {
                 return GetErrorResult(result);
-            }
 
             return Ok();
         }
@@ -251,8 +237,8 @@ namespace Nimrod.Events.Api.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
@@ -272,7 +258,7 @@ namespace Nimrod.Events.Api.Controllers
 
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
         [AllowAnonymous]
-        [Route("ExternalLogins")]
+        [Route("externallogins")]
         public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
         {
             IEnumerable<AuthenticationDescription> descriptions = Authentication.GetExternalAuthenticationTypes();
@@ -313,22 +299,18 @@ namespace Nimrod.Events.Api.Controllers
 
         // POST api/Account/Register
         [AllowAnonymous]
-        [Route("Register")]
+        [Route("register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
-            {
                 return GetErrorResult(result);
-            }
 
             return Ok();
         }
@@ -336,13 +318,11 @@ namespace Nimrod.Events.Api.Controllers
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Route("RegisterExternal")]
+        [Route("registerexternal")]
         public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             var info = await Authentication.GetExternalLoginInfoAsync();
             if (info == null)
@@ -354,15 +334,11 @@ namespace Nimrod.Events.Api.Controllers
 
             IdentityResult result = await UserManager.CreateAsync(user);
             if (!result.Succeeded)
-            {
                 return GetErrorResult(result);
-            }
 
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
-            {
-                return GetErrorResult(result); 
-            }
+                return GetErrorResult(result);
             return Ok();
         }
 
@@ -379,10 +355,7 @@ namespace Nimrod.Events.Api.Controllers
 
         #region Helpers
 
-        private IAuthenticationManager Authentication
-        {
-            get { return Request.GetOwinContext().Authentication; }
-        }
+        private IAuthenticationManager Authentication => Request.GetOwinContext().Authentication;
 
         private IHttpActionResult GetErrorResult(IdentityResult result)
         {
@@ -396,16 +369,12 @@ namespace Nimrod.Events.Api.Controllers
                 if (result.Errors != null)
                 {
                     foreach (string error in result.Errors)
-                    {
                         ModelState.AddModelError("", error);
-                    }
                 }
 
                 if (ModelState.IsValid)
-                {
                     // No ModelState errors are available to send, so just return an empty BadRequest.
                     return BadRequest();
-                }
 
                 return BadRequest(ModelState);
             }
@@ -425,32 +394,20 @@ namespace Nimrod.Events.Api.Controllers
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, ProviderKey, null, LoginProvider));
 
                 if (UserName != null)
-                {
                     claims.Add(new Claim(ClaimTypes.Name, UserName, null, LoginProvider));
-                }
 
                 return claims;
             }
 
             public static ExternalLoginData FromIdentity(ClaimsIdentity identity)
             {
-                if (identity == null)
-                {
-                    return null;
-                }
+                Claim providerKeyClaim = identity?.FindFirst(ClaimTypes.NameIdentifier);
 
-                Claim providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
-
-                if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer)
-                    || String.IsNullOrEmpty(providerKeyClaim.Value))
-                {
+                if (String.IsNullOrEmpty(providerKeyClaim?.Issuer) || String.IsNullOrEmpty(providerKeyClaim.Value))
                     return null;
-                }
 
                 if (providerKeyClaim.Issuer == ClaimsIdentity.DefaultIssuer)
-                {
                     return null;
-                }
 
                 return new ExternalLoginData
                 {
@@ -470,9 +427,7 @@ namespace Nimrod.Events.Api.Controllers
                 const int bitsPerByte = 8;
 
                 if (strengthInBits % bitsPerByte != 0)
-                {
                     throw new ArgumentException("strengthInBits must be evenly divisible by 8.", "strengthInBits");
-                }
 
                 int strengthInBytes = strengthInBits / bitsPerByte;
 

@@ -8,5 +8,9 @@ namespace Nimrod.Events.Api.Models
         public int ContactId { get; set; }
         public string Description { get; set; }
         public string Notes { get; set; }
+
+        public override string Href => $"api/attendees/{Id}";
+
+        public override string Rel => "attendees";
     }
 }

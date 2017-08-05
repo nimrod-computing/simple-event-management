@@ -34,6 +34,7 @@ namespace Nimrod.Events.Api
 
             JsonHalMediaTypeFormatter halMediaTypeFormatter = new JsonHalMediaTypeFormatter();
             halMediaTypeFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
             config.Formatters.Insert(0, halMediaTypeFormatter);
         }
     }

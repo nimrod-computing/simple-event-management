@@ -268,6 +268,7 @@
     <Compile Include="Models\AttendeeResource.cs" />
     <Compile Include="Models\Base\Resource.cs" />
     <Compile Include="Models\ContactResource.cs" />
+    <Compile Include="Models\ContactsCollection.cs" />
     <Compile Include="Models\Identity\AccountBindingModels.cs" />
     <Compile Include="Models\Identity\AccountViewModels.cs" />
     <Compile Include="Models\Identity\IdentityModels.cs" />

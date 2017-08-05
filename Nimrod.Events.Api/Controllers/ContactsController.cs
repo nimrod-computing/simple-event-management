@@ -26,9 +26,9 @@ namespace Nimrod.Events.Api.Controllers
             _contactsActions = actionsFactory.ContactActions();
         }
 
-        public IList<ContactResource> Get()
+        public ContactsCollection Get()
         {
-            return _contactsQueries.GetAll().ProjectTo<ContactResource>().ToList();
+            return Collection(_contactsQueries.GetAll().ProjectTo<ContactResource>());
         }
 
         [ResponseType(typeof(ContactResource))]
@@ -81,14 +81,10 @@ namespace Nimrod.Events.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        private ContactResource Resource(Contact entity)
-        {
-            return _mapper.Map<ContactResource>(entity);
-        }
+        private ContactResource Resource(Contact entity) => _mapper.Map<ContactResource>(entity);
 
-        private Contact Entity(ContactResource resource)
-        {
-            return _mapper.Map<Contact>(resource);
-        }
+        private Contact Entity(ContactResource resource) => _mapper.Map<Contact>(resource);
+
+        private ContactsCollection Collection(IEnumerable<ContactResource> resources) => new ContactsCollection(resources);
     }
 }

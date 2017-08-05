@@ -1,5 +1,3 @@
-
-
 using Nimrod.Events.Api.Models.Base;
 
 namespace Nimrod.Events.Api.Models

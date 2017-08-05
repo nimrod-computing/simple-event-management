@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nimrod.Events.Api", "Nimrod.Events.Api\Nimrod.Events.Api.csproj", "{475BD2DE-26EA-40D3-AD69-125AC4E83C1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nimrod.Events.DataAccess.EF", "Nimrod.Events.DataAccess.EF\Nimrod.Events.DataAccess.EF.csproj", "{0D4280D2-787B-40F8-8607-46CF2BE04808}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nimrod.Events.DomainModel", "Nimrod.Events.DomainModel\Nimrod.Events.DomainModel.csproj", "{464D2969-5B7C-4DA4-9D6E-6E9689BBB5DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nimrod.Events.Services", "Nimrod.Events.Services\Nimrod.Events.Services.csproj", "{C6C42032-1F5D-4AEA-B687-ABD03A52C079}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{475BD2DE-26EA-40D3-AD69-125AC4E83C1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{475BD2DE-26EA-40D3-AD69-125AC4E83C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{475BD2DE-26EA-40D3-AD69-125AC4E83C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{475BD2DE-26EA-40D3-AD69-125AC4E83C1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D4280D2-787B-40F8-8607-46CF2BE04808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D4280D2-787B-40F8-8607-46CF2BE04808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D4280D2-787B-40F8-8607-46CF2BE04808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D4280D2-787B-40F8-8607-46CF2BE04808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{464D2969-5B7C-4DA4-9D6E-6E9689BBB5DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{464D2969-5B7C-4DA4-9D6E-6E9689BBB5DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{464D2969-5B7C-4DA4-9D6E-6E9689BBB5DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{464D2969-5B7C-4DA4-9D6E-6E9689BBB5DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6C42032-1F5D-4AEA-B687-ABD03A52C079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6C42032-1F5D-4AEA-B687-ABD03A52C079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6C42032-1F5D-4AEA-B687-ABD03A52C079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6C42032-1F5D-4AEA-B687-ABD03A52C079}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
